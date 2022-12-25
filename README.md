@@ -26,5 +26,25 @@ open folder apiCRUD
 
 and 
 
+requirements run django
+
+pip install django-cors-headers
+
+
+pip install Pillow
+
+
+pip install djangorestframework
+
+and python manage.py runserver
+
+
+run fron-end app 
+
+npm i 
+
+npm start 
+
+
 
 
