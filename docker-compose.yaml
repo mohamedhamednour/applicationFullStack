@@ -1,0 +1,51 @@
+version: "3.2"
+services:
+  redis:
+    restart: always
+    image: redis:5
+    ports:
+      - "6379:6379"
+    networks:
+      - db-net
+
+  
+    ports:
+      - "3302:3306"
+    networks:
+      - db-net
+
+  api:
+    restart: always
+    container_name: code
+    command : bash -c "python check_db.py --service-name db --ip db --port 3306 && 
+                      python manage.py migrate &&
+                      python manage.py runserver 0.0.0.0:8000"
+    
+    build:
+      context: ./apiCRUD/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - db-net
+
+  front-react:
+    restart: always
+    command : npm start
+    container_name: front
+    build:
+      context: ./front-react/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - api
+    networks:
+      - db-net
+
+networks:
+  db-net:
+    driver: bridge
