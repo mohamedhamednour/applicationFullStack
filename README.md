@@ -25,6 +25,7 @@ open folder apiCRUD
 
 
 and 
+pip install Django==4.0.4
 
 requirements run django
 
